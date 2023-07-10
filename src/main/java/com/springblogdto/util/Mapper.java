@@ -1,11 +1,7 @@
 package com.springblogdto.util;
 
-import com.springblogdto.dto.CommentDto;
-import com.springblogdto.dto.PostDto;
-import com.springblogdto.dto.UserDto;
-import com.springblogdto.entity.Comment;
-import com.springblogdto.entity.Post;
-import com.springblogdto.entity.User;
+import com.springblogdto.dto.*;
+import com.springblogdto.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +23,39 @@ public class Mapper {
 
         return user;
     }
+
+    public LikeDto mapToDto(Like like) {
+
+        ModelMapper mapper = new ModelMapper();
+        //map with modelMapper lib.
+        LikeDto likeDto = mapper.map(like, LikeDto.class);
+        return likeDto;
+
+    }
+    public Like mapToEntity( LikeDto likeDto) {
+        ModelMapper mapper = new ModelMapper();
+        //map with modelMapper lib.
+        Like like = mapper.map(likeDto, Like.class);
+
+        return like;
+    }
+
+    public DisLikeDto mapToDto(Dislike dislike) {
+
+        ModelMapper mapper = new ModelMapper();
+        //map with modelMapper lib.
+        DisLikeDto dislikeDto = mapper.map(dislike, DisLikeDto.class);
+        return dislikeDto;
+
+    }
+    public Dislike mapToEntity(DisLikeDto disLikeDto) {
+        ModelMapper mapper = new ModelMapper();
+        //map with modelMapper lib.
+        Dislike dislike = mapper.map(disLikeDto, Dislike.class);
+
+        return dislike;
+    }
+
     public PostDto mapToDto(Post post) {
 
         ModelMapper mapper = new ModelMapper();

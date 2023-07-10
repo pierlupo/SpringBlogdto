@@ -1,5 +1,6 @@
 package com.springblogdto.controller;
 
+import com.springblogdto.dto.UserDto;
 import com.springblogdto.entity.User;
 import com.springblogdto.service.UserService;
 import jakarta.validation.Valid;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/")
@@ -19,35 +19,35 @@ public class UserController {
     private UserService IUserService;
 
     @PostMapping("/save")
-    ResponseEntity<String> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
 
-        IUserService.createUser(user);
+        IUserService.createUser(userDto);
 
-        return ResponseEntity.ok("User successfully created");
+        return new ResponseEntity<>(IUserService.createUser(userDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
 
         return new ResponseEntity(IUserService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Optional<User>> getUserById(@PathVariable(name = "id") int id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Integer id){
 
         return ResponseEntity.ok(IUserService.getUserById(id));
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<User> updateAuthor(@RequestBody User author, @PathVariable(name = "id") int id){
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable(name = "id") Integer id){
 
-        User userResponse = IUserService.updateUser(author, id);
+        UserDto userResponse = IUserService.updateUser(userDto, id);
 
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") int id){
+    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Integer id){
 
         IUserService.deleteUserById(id);
 

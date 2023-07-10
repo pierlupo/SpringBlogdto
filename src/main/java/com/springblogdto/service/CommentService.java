@@ -1,21 +1,21 @@
 package com.springblogdto.service;
 
-import com.springblogdto.entity.Comment;
+import com.springblogdto.dto.CommentDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public interface CommentService {
 
-    Comment createComment(Comment comment);
+    CommentDto createComment(CommentDto commentDto);
 
-    Comment updateComment(Comment comment, Integer id);
+    CommentDto updateComment(CommentDto commentDto, Integer id);
 
-    Optional<Comment> getCommentbyId(Integer id);
+    CommentDto getCommentbyId(Integer id);
 
-    List<Comment> getAllComments();
+    List<CommentDto> getAllComments();
 
     void deleteCommentById(Integer id);
 

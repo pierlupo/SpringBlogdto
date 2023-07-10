@@ -1,49 +1,76 @@
 package com.springblogdto.service.impl;
 
+import com.springblogdto.dto.PostDto;
 import com.springblogdto.entity.Post;
+import com.springblogdto.exception.NotFoundException;
 import com.springblogdto.repository.PostRepo;
 import com.springblogdto.service.PostService;
+import com.springblogdto.util.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class IPostService implements PostService {
 
+
+    @Autowired
     private PostRepo postRepo;
 
+    @Autowired
+    private Mapper mapper;
+
     @Override
-    public Post createPost(Post post) {
-       return postRepo.save(post);
+    public PostDto createPost(PostDto postDto) {
+
+        Post post = mapper.mapToEntity(postDto);
+
+        Post newPost = postRepo.save(post);
+
+        PostDto postResponse = mapper.mapToDto(newPost);
+
+        return postResponse;
     }
 
     @Override
-    public Post updatePost(Post post, Integer id) {
-        Optional<Post> post1 = postRepo.findById(id);
-        if(post1.isPresent()){
-            Post post2 = post1.get();
-            post2.setTitle(post.getTitle());
-            post2.setUser(post.getUser());
-            post2.setText((post.getText()));
-            post2.setComments(post.getComments());
-            return postRepo.save(post2);
-        }
-        return null;
+    public PostDto updatePost(PostDto postDto, Integer id) {
+
+        Post post = getPostByIdFromDatabase(id);
+
+        post.setTitle(postDto.getTitle());
+        post.setText(postDto.getText());
+
+        Post updatePost = postRepo.save(post);
+        return mapper.mapToDto(updatePost);
     }
 
     @Override
-    public Optional<Post> getPostById(Integer id) {
-        return postRepo.findById(id);
+    public PostDto getPostById(Integer id) {
+
+        Post post = getPostByIdFromDatabase(id);
+
+        return mapper.mapToDto(post);
     }
 
     @Override
-    public List<Post> getAllPosts() {
-        return (List<Post>) postRepo.findAll();
+    public List<PostDto> getAllPosts() {
+        List<Post> posts = (List<Post>) postRepo.findAll();
+        List<PostDto> postDtoList =  posts.stream().map(post->mapper.mapToDto(post)).collect(Collectors.toList());
+        return postDtoList;
     }
 
     @Override
     public void deletePostById(Integer id) {
+
+        Post post = getPostByIdFromDatabase(id);
+
         postRepo.deleteById(id);
     }
+
+    private Post getPostByIdFromDatabase(Integer id) {
+
+        return postRepo.findById(id).orElseThrow(() -> new NotFoundException("Post", "id", id));
+    }
+
 }

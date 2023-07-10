@@ -4,15 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "dislike")
+@Table(name = "_dislike")
 public class Dislike {
 
     @Id
@@ -22,7 +21,7 @@ public class Dislike {
     @Temporal(TemporalType.DATE)
     private LocalDate Date;
 
-    @ManyToMany
-    private List<Comment> comments;
+    @ManyToOne
+    private Comment comment;
 
 }

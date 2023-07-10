@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 
 @Data
 @AllArgsConstructor
@@ -27,6 +25,5 @@ public class PostDto {
     @Size(max = 250, message = "The text should have a max of 250 characters")
     private String text;
 
-    private Set<CommentDto> comments;
 
 }

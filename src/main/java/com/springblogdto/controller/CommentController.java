@@ -1,6 +1,7 @@
 package com.springblogdto.controller;
 
 
+import com.springblogdto.dto.CommentDto;
 import com.springblogdto.entity.Comment;
 import com.springblogdto.service.CommentService;
 import jakarta.validation.Valid;
@@ -20,24 +21,23 @@ public class CommentController {
     private CommentService ICommentService;
 
     @PostMapping("/save")
-    ResponseEntity<String> createComment(@Valid @RequestBody Comment comment) {
-        ICommentService.createComment(comment);
-        return ResponseEntity.ok("Your comment has been published");
-    }
+    ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentDto commentDto) {
+        ICommentService.createComment(commentDto);
+        return new ResponseEntity<>( ICommentService.createComment(commentDto), HttpStatus.CREATED);    }
 
-    @GetMapping("/all")
+    @GetMapping("/comments")
     public ResponseEntity<List<Comment>> getAllComments() {
         return new ResponseEntity(ICommentService.getAllComments(), HttpStatus.OK);
     }
 
     @GetMapping("/comment/{id}")
-    public ResponseEntity<Optional<Comment>> getCommentById(@PathVariable(name="id")Integer id) {
+    public ResponseEntity<CommentDto> getCommentByIdV2(@PathVariable(name="id")Integer id) {
         return ResponseEntity.ok(ICommentService.getCommentbyId(id));
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Comment> updateComment(@RequestBody Comment comment, @PathVariable(name="id")Integer id) {
-        Comment commentResponse = ICommentService.updateComment(comment, id);
+    public ResponseEntity<CommentDto> updateComment(@RequestBody CommentDto commentDto, @PathVariable(name="id")Integer id) {
+        CommentDto commentResponse = ICommentService.updateComment(commentDto, id);
         return new ResponseEntity<>(commentResponse, HttpStatus.OK);
     }
 

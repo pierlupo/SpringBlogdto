@@ -1,21 +1,20 @@
 package com.springblogdto.service;
 
-import com.springblogdto.entity.User;
+import com.springblogdto.dto.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface UserService {
 
-    User createUser(User user);
+    UserDto createUser(UserDto userDto);
 
-    User updateUser(User user, Integer id);
+    UserDto updateUser(UserDto userDto, Integer id);
 
-    Optional<User> getUserById(Integer id);
+    UserDto getUserById(Integer id);
 
-    List<User> getAllUsers();
+    List<UserDto> getAllUsers();
 
     void deleteUserById(Integer id);
 }

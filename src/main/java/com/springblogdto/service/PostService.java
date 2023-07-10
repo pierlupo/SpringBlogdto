@@ -1,5 +1,6 @@
 package com.springblogdto.service;
 
+import com.springblogdto.dto.PostDto;
 import com.springblogdto.entity.Post;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +10,13 @@ import java.util.Optional;
 @Service
 public interface PostService {
 
-    Post createPost(Post post);
+    PostDto createPost(PostDto postDto);
 
-    Post updatePost(Post post, Integer id);
+    PostDto updatePost(PostDto postDto, Integer id);
 
-    Optional<Post> getPostById(Integer id);
+    PostDto getPostById(Integer id);
 
-    List<Post> getAllPosts();
+    List<PostDto> getAllPosts();
 
     void deletePostById(Integer id);
 }

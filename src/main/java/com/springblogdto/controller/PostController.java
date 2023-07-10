@@ -1,5 +1,6 @@
 package com.springblogdto.controller;
 
+import com.springblogdto.dto.PostDto;
 import com.springblogdto.entity.Post;
 import com.springblogdto.service.PostService;
 import jakarta.validation.Valid;
@@ -7,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v3")
@@ -19,24 +18,26 @@ public class PostController {
     private PostService IPostService;
 
     @PostMapping("/save")
-    ResponseEntity<String> createPost(@Valid @RequestBody Post post) {
-        IPostService.createPost(post);
-        return ResponseEntity.ok("Yo have published a post");
+    public  ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
+        IPostService.createPost(postDto);
+        return new ResponseEntity<>( IPostService.createPost(postDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/posts")
     public ResponseEntity<List<Post>> getAllPosts() {
         return new ResponseEntity(IPostService.getAllPosts(), HttpStatus.OK);
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity<Optional <Post>> getPostById(@PathVariable(name="id")Integer id) {
+    public ResponseEntity<PostDto> getPostByIdV1(@PathVariable(name = "id") Integer id){
         return ResponseEntity.ok(IPostService.getPostById(id));
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Post> updatePost(@RequestBody Post post, @PathVariable(name="id")Integer id) {
-        Post postResponse = IPostService.updatePost(post, id);
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name = "id") Integer id){
+
+        PostDto postResponse = IPostService.updatePost(postDto, id);
+
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 

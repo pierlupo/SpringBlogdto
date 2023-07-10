@@ -21,5 +21,5 @@ public class UserDto {
 
     @NotEmpty(message = "The username should not be null or empty")
     @Size(max = 15, message = "The username should have a max of 15 characters")
-    private String username;
+    private String userName;
 }
