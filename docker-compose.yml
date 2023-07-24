@@ -1,0 +1,39 @@
+services:
+  api:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=jdbc:mysql://db:3306/spring_blog_dto?createDatabaseIfNotExist=true
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=test
+    networks:
+      blog_network:
+        ipv4_address: 10.5.0.2
+    links:
+      - db
+    depends_on:
+      - db
+
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      #MYSQL_DATABASE: spring_blog_dto
+    volumes:
+      - data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      blog_network:
+        ipv4_address: 10.5.0.3
+volumes:
+  data:
+
+networks:
+  blog_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
